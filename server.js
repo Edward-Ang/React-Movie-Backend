@@ -4,6 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const passport = require("passport");
 const authRoute = require("./routes/auth");
+const apiRoute = require("./routes/api");
 const mongoose = require('mongoose');
 const cookieSession = require("cookie-session");
 const passportStrategy = require("./passport");
@@ -36,6 +37,7 @@ app.use(
 );
 
 app.use("/auth", authRoute);
+app.use("/api", apiRoute);
 
 // Start the server
 app.listen(5000, () => {
