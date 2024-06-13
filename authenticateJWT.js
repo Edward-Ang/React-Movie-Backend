@@ -17,11 +17,11 @@ const authenticateJWT = async (req, res, next) => {
 
             if (user.googleId) {
                 req.user = req.user; 
-                console.log('req.user: ', req.user);// Attach user to req object
+                //console.log('req.user: ', req.user); // Attach user to req object
                 next();
             } else {
                 req.user = user; 
-                console.log('req.user: ', req.user);// Attach user to req object
+                //console.log('req.user: ', req.user); // Attach user to req object
                 next();
             } // Proceed to the next middleware or route handler
         } catch (err) {

@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 const authenticateJWT = require('../authenticateJWT');
 
 router.get("/login/success", authenticateJWT, async (req, res) => {
-    console.log('Incoming request:', req.user); // Log the req.user object
+    console.log('Incoming request:', req.user.name); // Log the req.user object
 
     if (req.user) {
         try {
