@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(
   cookieSession({
     name: 'session',
-    keys: [process.env.SESSION_KEY],
+    keys: ['sessionkey'],
     maxAge: 24 * 60 * 60 * 1000,
   })
 );
