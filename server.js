@@ -20,7 +20,7 @@ app.use(
   cookieSession({
     name: "session",
     keys: ["sessionkey"],
-    maxAge: 24 * 60 * 60 * 100,
+    maxAge: 24 * 60 * 60 * 1000,
   })
 );
 
@@ -30,7 +30,7 @@ app.use(passport.session());
 // Enable CORS
 app.use(
   cors({
-    origin: "https://react-app-brown-mu.vercel.app",
+    origin: "http://popwatchapp.s3-website-ap-southeast-1.amazonaws.com",
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })
