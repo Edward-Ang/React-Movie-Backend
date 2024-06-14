@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 const authenticateJWT = require('../authenticateJWT');
 
 router.get("/login/success", authenticateJWT, async (req, res) => {
-    console.log('Incoming request:', req.user.name); // Log the req.user object
+    console.log('Incoming request:', req.user); // Log the req.user object
 
     if (req.user) {
         try {
@@ -68,11 +68,11 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
             });
 
             user = await newUser.save();
-            const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-            res.redirect(`${process.env.CLIENT_URL}?token=${token}`);
+            const token = jwt.sign({ userId: user._id }, 'your_secret_key', { expiresIn: '1h' });
+            res.redirect(`http://popwatchapp.s3-website-ap-southeast-1.amazonaws.com?token=${token}`);
         } else {
-            const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-            res.redirect(`${process.env.CLIENT_URL}?token=${token}`);
+            const token = jwt.sign({ userId: user._id }, 'your_secret_key', { expiresIn: '1h' });
+            res.redirect(`http://popwatchapp.s3-website-ap-southeast-1.amazonaws.com?token=${token}`);
         }
     } catch (err) {
         console.error('Error in /google/callback route:', err);
@@ -125,7 +125,7 @@ router.post('/login', async (req, res) => {
         req.user = user;
 
         // If the user object is attached to the request, proceed with sending the token
-        const token = jwt.sign({ userId: req.user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ userId: req.user._id }, 'your_secret_key', { expiresIn: '1h' });
         res.status(200).json({ message: 'Login success', token });
     } catch (err) {
         console.error('Login error:', err);
@@ -135,7 +135,7 @@ router.post('/login', async (req, res) => {
 
 router.get("/logout", (req, res) => {
     req.logout();
-    res.redirect(process.env.CLIENT_URL);
+    res.redirect('http://popwatchapp.s3-website-ap-southeast-1.amazonaws.com');
 });
 
 module.exports = router;

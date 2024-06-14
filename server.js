@@ -2,12 +2,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const cookieSession = require('cookie-session');
+const passportStrategy = require("./passport");
 const cors = require('cors');
 
 const app = express();
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect("mongodb+srv://weihenang02:7DmqeA18poRALnhm@popwatch-cluster.glq5nzq.mongodb.net/PopWatch")
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
@@ -45,7 +46,7 @@ app.use('/auth', authRoute);
 app.use('/api', apiRoute);
 
 // Start the server
-const PORT = process.env.PORT || 8080;
+const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Server started on http://localhost:${PORT}`);
 });

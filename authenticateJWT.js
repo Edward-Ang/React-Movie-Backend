@@ -7,7 +7,7 @@ const authenticateJWT = async (req, res, next) => {
 
     if (token) {
         try {
-            const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify the token
+            const decoded = jwt.verify(token, 'your_secret_key'); // Verify the token
             const user = await User.findById(decoded.userId); // Find user by ID
 
             if (!user) {
@@ -16,7 +16,8 @@ const authenticateJWT = async (req, res, next) => {
             }
 
             if (user.googleId) {
-                req.user = req.user; 
+                req.user = user; 
+                //console.log('user: ', user);
                 //console.log('req.user: ', req.user); // Attach user to req object
                 next();
             } else {
