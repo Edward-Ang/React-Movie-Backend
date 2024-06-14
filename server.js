@@ -1,13 +1,9 @@
-//server.js
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const passport = require("passport");
-const authRoute = require("./routes/auth");
-const apiRoute = require("./routes/api");
+const express = require('express');
 const mongoose = require('mongoose');
-const cookieSession = require("cookie-session");
-const passportStrategy = require("./passport");
+const passport = require('passport');
+const cookieSession = require('cookie-session');
+const cors = require('cors');
+
 const app = express();
 
 // Connect to MongoDB
@@ -15,15 +11,15 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
+// Middleware
 app.use(express.json());
 app.use(
   cookieSession({
-    name: "session",
-    keys: ["sessionkey"],
+    name: 'session',
+    keys: [process.env.SESSION_KEY],
     maxAge: 24 * 60 * 60 * 1000,
   })
 );
-
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -31,15 +27,25 @@ app.use(passport.session());
 app.use(
   cors({
     origin: 'http://popwatchapp.s3-website-ap-southeast-1.amazonaws.com',
-    methods: ["POST", "GET"],
+    methods: ['POST', 'GET'],
     credentials: true,
   })
 );
 
-app.use("/auth", authRoute);
-app.use("/api", apiRoute);
+// Health check route
+app.get('/', (req, res) => {
+  res.send('Application is running');
+});
+
+// Routes
+const authRoute = require('./routes/auth');
+const apiRoute = require('./routes/api');
+
+app.use('/auth', authRoute);
+app.use('/api', apiRoute);
 
 // Start the server
-app.listen(5000, () => {
-  console.log('Server started on http://localhost:5000');
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server started on http://localhost:${PORT}`);
 });
