@@ -46,7 +46,7 @@ app.use('/auth', authRoute);
 app.use('/api', apiRoute);
 
 // Start the server
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server started on http://localhost:${PORT}`);
 });
