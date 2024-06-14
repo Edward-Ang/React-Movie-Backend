@@ -30,8 +30,8 @@ app.use(passport.session());
 // Enable CORS
 app.use(
   cors({
-    origin: "http://popwatchapp.s3-website-ap-southeast-1.amazonaws.com",
-    methods: "GET,POST,PUT,DELETE",
+    origin: 'http://popwatchapp.s3-website-ap-southeast-1.amazonaws.com',
+    methods: ["POST", "GET"],
     credentials: true,
   })
 );
