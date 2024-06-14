@@ -11,7 +11,7 @@ const passportStrategy = require("./passport");
 const app = express();
 
 // Connect to MongoDB
-mongoose.connect('mongodb://127.0.0.1:27017/PopWatch')
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
@@ -30,7 +30,7 @@ app.use(passport.session());
 // Enable CORS
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://react-app-brown-mu.vercel.app",
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })
