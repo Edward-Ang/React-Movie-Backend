@@ -4,7 +4,8 @@ const Favourite = require('../models/favourite');
 const router = express.Router();
 
 router.post("/favourite", async (req, res) => {
-  const { movie, user, favrating } = req.body;
+  const { id, movie, user, favrating } = req.body;
+  const type = id;
   const email = user.email;
   const movieId = movie.id;
   const movieTitle = movie.title ? movie.title : movie.name;
@@ -18,6 +19,7 @@ router.post("/favourite", async (req, res) => {
     }
 
     const newFavourite = new Favourite({
+      type: type,
       movieId: movieId,
       movieName: movieTitle,
       movieDate: movieDate,

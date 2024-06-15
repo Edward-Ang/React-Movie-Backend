@@ -13,22 +13,17 @@ router.get("/login/success", authenticateJWT, async (req, res) => {
     if (req.user) {
         try {
             let userData;
-            if (req.user.provider === 'google') {
-                // If the user logged in with Google, extract necessary data from req.user
-                userData = req.user._json;
-            } else {
-                // If the user logged in with email/password, fetch the user from the database based on the ID
-                const user = await User.findById(req.user._id);
-                if (!user) {
-                    return res.status(404).json({ message: 'User not found' });
-                }
-                userData = {
-                    id: user._id,
-                    name: user.username,
-                    email: user.email,
-                    provider: 'email/password'
-                };
+            const user = await User.findById(req.user._id);
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
             }
+            userData = {
+                id: user._id,
+                name: user.username,
+                email: user.email,
+                provider: 'email/password',
+                picture: user.picture,
+            };
 
             res.status(200).json({
                 error: false,
@@ -55,7 +50,8 @@ router.get("/google", passport.authenticate("google", ["profile", "email"]));
 
 // Google authentication callback
 router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/login/failed' }), async (req, res) => {
-    const { id, displayName, emails } = req.user;
+    const { id, displayName, emails, photos } = req.user;
+    console.log(photos);
 
     try {
         let user = await User.findOne({ googleId: id });
@@ -65,6 +61,7 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
                 username: displayName,
                 email: emails[0].value,
                 googleId: id,
+                picture: photos[0].value,
             });
 
             user = await newUser.save();
