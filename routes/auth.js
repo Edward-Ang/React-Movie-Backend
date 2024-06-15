@@ -69,10 +69,10 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
 
             user = await newUser.save();
             const token = jwt.sign({ userId: user._id }, 'your_secret_key', { expiresIn: '1h' });
-            res.redirect(`http://localhost:3000?token=${token}`);
+            res.redirect(`http://popwatchapp.s3-website-ap-southeast-1.amazonaws.com?token=${token}`);
         } else {
             const token = jwt.sign({ userId: user._id }, 'your_secret_key', { expiresIn: '1h' });
-            res.redirect(`http://localhost:3000?token=${token}`);
+            res.redirect(`http://popwatchapp.s3-website-ap-southeast-1.amazonaws.com?token=${token}`);
         }
     } catch (err) {
         console.error('Error in /google/callback route:', err);
@@ -135,7 +135,7 @@ router.post('/login', async (req, res) => {
 
 router.get("/logout", (req, res) => {
     req.logout();
-    res.redirect('http://localhost:3000');
+    res.redirect('http://popwatchapp.s3-website-ap-southeast-1.amazonaws.com');
 });
 
 module.exports = router;
