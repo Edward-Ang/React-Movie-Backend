@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 
 // Define the Favourite schema
 const favouriteSchema = new mongoose.Schema({
+    type: { type: String, required: true },
     movieId: { type: String, required: true },
     movieName: { type: String, required: true },
     movieDate: { type: Date, required: true },
