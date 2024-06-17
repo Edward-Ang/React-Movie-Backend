@@ -71,4 +71,28 @@ router.post('/deleteFavourite', async (req, res) => {
   }
 });
 
+router.post('/updateFavourite', async (req, res) => {
+  const { movieId, email, updateRating } = req.body;
+  console.log('MovieId: ', movieId);
+  console.log('Email: ', email);
+  console.log('Updated rating: ', updateRating);
+
+  try {
+    const updateResult = await Favourite.findOneAndUpdate(
+      { movieId: movieId, userEmail: email },
+      { rating: updateRating }, // Update the 'rating' field with the new value
+      { new: true } // Option to return the updated document
+    );
+
+    if (!updateResult) {
+      return res.status(400).json({ message: 'Update target not found' });
+    }
+
+    res.status(200).json({ message: 'Update success' });
+  } catch (err) {
+    console.log('error: ', err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 module.exports = router;
