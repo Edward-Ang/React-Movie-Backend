@@ -37,7 +37,7 @@ router.post("/favourite", async (req, res) => {
 
 router.get('/getFavourite', async (req, res) => {
   const userEmail = req.query.userEmail;
-  console.log('email: ', userEmail);
+  console.log('Current user: ', userEmail);
 
   try {
     const favLists = await Favourite.find({ userEmail });
@@ -52,5 +52,23 @@ router.get('/getFavourite', async (req, res) => {
   }
 });
 
+router.post('/deleteFavourite', async (req, res) => {
+  const { movieId, email } = req.body;
+  console.log('MovieId: ', movieId);
+  console.log('Email: ', email);
+
+  try {
+    const deleteResult = await Favourite.deleteOne({ movieId: movieId, userEmail: email });
+
+    if (deleteResult.deletedCount === 0) {
+      return res.status(400).json({ message: 'Delete target not found' });
+    }
+
+    res.status(200).json({ message: 'Delete success' });
+  } catch (err) {
+    console.log('error: ', err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
 
 module.exports = router;
