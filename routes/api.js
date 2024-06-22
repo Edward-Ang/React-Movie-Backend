@@ -95,4 +95,21 @@ router.post('/updateFavourite', async (req, res) => {
   }
 });
 
+router.get('/checkFavourite', async (req, res) => {
+  const { movieId, email } = req.query;
+
+  try {
+    const existingfav = await Favourite.findOne({ movieId: movieId, userEmail: email });
+
+    if (existingfav) {
+      return res.status(200).json({ exists: true });
+    } else {
+      return res.status(200).json({ exists: false });
+    }
+  } catch (err) {
+    console.log('error: ', err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 module.exports = router;
