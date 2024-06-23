@@ -65,10 +65,10 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
             });
 
             user = await newUser.save();
-            const token = jwt.sign({ userId: user._id }, 'your_secret_key', { expiresIn: '1h' });
+            const token = jwt.sign({ userId: user._id }, 'your_secret_key', { expiresIn: '30d' });
             res.redirect(`http://popwatchapp.s3-website-ap-southeast-1.amazonaws.com?token=${token}`);
         } else {
-            const token = jwt.sign({ userId: user._id }, 'your_secret_key', { expiresIn: '1h' });
+            const token = jwt.sign({ userId: user._id }, 'your_secret_key', { expiresIn: '30d' });
             res.redirect(`http://popwatchapp.s3-website-ap-southeast-1.amazonaws.com?token=${token}`);
         }
     } catch (err) {
@@ -122,7 +122,7 @@ router.post('/login', async (req, res) => {
         req.user = user;
 
         // If the user object is attached to the request, proceed with sending the token
-        const token = jwt.sign({ userId: req.user._id }, 'your_secret_key', { expiresIn: '1h' });
+        const token = jwt.sign({ userId: req.user._id }, 'your_secret_key', { expiresIn: '30d' });
         res.status(200).json({ message: 'Login success', token });
     } catch (err) {
         console.error('Login error:', err);
